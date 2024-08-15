@@ -63,6 +63,11 @@ jobs:
         context: .
         push: true
         tags: us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}
+
+    - name: Scan image
+      uses: anchore/scan-action@v3
+      with:
+        image: "us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}"
     
     # # Set up kustomize
     # - name: Set up Kustomize
