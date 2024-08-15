@@ -34,7 +34,7 @@ spec:
     spec:
       containers:
       - name: hello-app
-        image: us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app@sha256:f449e849ef740526327cb74de7f70d3f4b57800ee650aef55eff55064ded21f0
+        image: us-east4-docker.pkg.dev/***/voting-app-demo/vote-app:86aa5bc7999286948529c3642e50726431104ce8
         ports:
         - containerPort: 8080
         resources:
