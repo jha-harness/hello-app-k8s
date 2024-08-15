@@ -64,17 +64,26 @@ jobs:
         push: true
         tags: us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}
 
-    - name: Scan image
-      uses: anchore/scan-action@v3
+    - name: Scan the image and upload dependency results
+      uses: anchore/sbom-action@bb716408e75840bbb01e839347cd213767269d4a
       with:
-        image: "us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}"
-    
-    # # Set up kustomize
-    # - name: Set up Kustomize
-    #   run: |-
-    #     curl -sfLo kustomize https://github.com/kubernetes-sigs/kustomize/releases/download/v3.1.0/kustomize_3.1.0_linux_amd64
-    #     chmod u+x ./kustomize
-    # # Deploy the Docker image to the GKE cluster
+        image:  "us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}"
+        artifact-name: image.spdx.json
+        dependency-snapshot: true
+
+    - name: Run the Anchore Grype scan action
+      uses: anchore/scan-action@d5aa5b6cb9414b0c7771438046ff5bcfa2854ed7
+      id: container-scan
+      with:
+        image:  "us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}"
+        fail-build: true
+        severity-cutoff: critical
+        
+    - name: Upload vulnerability report
+      uses: github/codeql-action/upload-sarif@v3
+      with:
+        sarif_file: ${{ steps.container-scan.outputs.sarif }}
+
     - name: Deploy
       run: |-
         # replacing the image name in the k8s template
