@@ -27,10 +27,8 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-  call-another-reusable:
+  use-workflow-template-linter:
       uses: jha-harness/GitHub-CD-MYKO/.github/workflows/workflow-reusable.yml@main
-      secrets:
-        token: ${{ secrets.GITHUB_TOKEN }}
 
   analyze:
     name: Analyze (${{ matrix.language }})
