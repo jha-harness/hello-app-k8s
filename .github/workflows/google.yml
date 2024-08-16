@@ -89,13 +89,12 @@ jobs:
 
     - name: Deploy
       run: |-
-        # replacing the image name in the k8s template
-        #  ./kustomize edit set image LOCATION-docker.pkg.dev/PROJECT_ID/REPOSITORY/IMAGE:TAG=$GAR_LOCATION-docker.pkg.dev/$PROJECT_ID/$REPOSITORY/$IMAGE:$GITHUB_SHA
-        # ./kustomize edit set image us-east4-docker.pkg.dev/fluted-elf-432519-t7/voting-app-demo/vote-app:${{ github.sha }}
         kubectl apply -f manifests/helloweb-deployment.yaml
         kubectl apply -f manifests/helloweb-service-load-balancer.yaml
         kubectl rollout status deployment/$DEPLOYMENT_NAME
         kubectl get services -o wide
+
+    # NEED TO SCRIPT: Add Canary / BG Steps - See other files
 
   setup-build-publish-deploy-prod:
     name: Deploy-to-Prod
@@ -131,3 +130,12 @@ jobs:
         kubectl apply -f manifests/helloweb-service-load-balancer.yaml
         kubectl rollout status deployment/$DEPLOYMENT_NAME
         kubectl get services -o wide
+
+    - name: Rollback on Failure
+      uses: gke/k8s-deploy@v1.3
+      if: ${{ failure() }}
+      with:
+        namespace: default
+        manifests: |
+          ./kubernetes/service.yaml
+          ./kubernetes/load-balancer.yaml
