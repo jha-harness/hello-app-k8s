@@ -27,6 +27,9 @@ jobs:
     - name: Test
       run: go test -v ./...
 
+  call-another-reusable:
+      uses: jha-harness/GitHub-CD-MYKO/.github/workflows/workflow-reusable.yml@main
+
   analyze:
     name: Analyze (${{ matrix.language }})
     # Consider using larger runners or machines with greater resources for possible analysis time improvements.
