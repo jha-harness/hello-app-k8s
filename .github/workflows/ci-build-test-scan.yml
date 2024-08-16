@@ -29,6 +29,8 @@ jobs:
 
   call-another-reusable:
       uses: jha-harness/GitHub-CD-MYKO/.github/workflows/workflow-reusable.yml@main
+      secrets:
+        token: ${{ secrets.GITHUB_TOKEN }}
 
   analyze:
     name: Analyze (${{ matrix.language }})
