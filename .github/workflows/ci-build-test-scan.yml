@@ -28,7 +28,7 @@ jobs:
       run: go test -v ./...
 
   use-workflow-template-scan:
-      uses: jha-harness/GitHub-CD-MYKO/.github/workflows/workflow-reusable.yml@main
+      uses: jha-harness/GitHub-CD-MYKO/.github/workflows/workflow-reusable-sast.yml@main
 
   # analyze:
   #   name: Analyze (${{ matrix.language }})
