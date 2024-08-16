@@ -13,17 +13,6 @@ jobs:
 
   build:
     runs-on: ubuntu-latest
-    permissions:
-      # required for all workflows
-      security-events: write
-
-      # required to fetch internal or private CodeQL packs
-      packages: read
-
-      # only required for workflows in private repositories
-      actions: read
-      contents: read
-
     steps:
     - uses: actions/checkout@v4
 
@@ -39,6 +28,16 @@ jobs:
       run: go test -v ./...
 
   use-workflow-template-scan:
+      permissions:
+        # required for all workflows
+        security-events: write
+
+        # required to fetch internal or private CodeQL packs
+        packages: read
+
+        # only required for workflows in private repositories
+        actions: read
+        contents: read
       uses: jha-harness/GitHub-CD-MYKO/.github/workflows/workflow-reusable-sast.yml@main
 
   # analyze:
