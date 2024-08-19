@@ -29,13 +29,10 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - uses: buluma/create-issue-action@v2.0.0
-      name: Create Issue Action
-      with:
-        title: Build Success 
-        token: ${{secrets.ISSUE_TOKEN}}
-        assignees: ${{github.actor}}
-        body: Workflow build-test for commit ${{github.sha}}
+
+    - uses: JasonEtco/create-an-issue@v2
+      env:
+        GITHUB_TOKEN: ${{ secrets.ISSUE_TOKEN }}
 
   use-workflow-template-scan:
       permissions:
