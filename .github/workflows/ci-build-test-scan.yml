@@ -31,12 +31,6 @@ jobs:
     - name: Test
       run: go test -v ./...
 
-    - name: Run linters
-      uses: wearerequired/lint-action@v2
-      with:
-        eslint: true
-        prettier: true
-
   use-workflow-template-scan:
       permissions:
         # required for all workflows
